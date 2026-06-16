@@ -1,40 +1,46 @@
 
-# Reverse Proxy — api.mtaiirus.workers.dev → rarestudy.in
+# mtaiirus-proxy
 
-## What this does
-All requests to `https://api.mtaiirus.workers.dev/...` are forwarded to
-`https://rarestudy.in/...` and served back to the user. The browser always
-sees `api.mtaiirus.workers.dev` in the address bar.
+Reverse proxy: `api.mtaiirus.workers.dev` → `rarestudy.in`
 
-## Setup
+## Deploy in 3 steps
 
-### 1. Install Wrangler (Cloudflare CLI)
+### 1. Install dependencies
 ```bash
-npm install -g wrangler
+npm install
 ```
 
-### 2. Log in to Cloudflare
+### 2. Login to Cloudflare
 ```bash
-wrangler login
+npx wrangler login
 ```
 
 ### 3. Deploy
 ```bash
-wrangler deploy
+npm run deploy
 ```
 
-Your worker will be live at:
-`https://api.mtaiirus.workers.dev`
+Your proxy will be live at:
+👉 https://api.mtaiirus.workers.dev
 
-## Files
-- `worker.js` — the proxy logic
-- `wrangler.toml` — deployment config
+## Local development
+```bash
+npm run dev
+```
+Opens a local tunnel at http://localhost:8787
+
+## Project structure
+```
+mtaiirus-proxy/
+├── src/
+│   └── worker.js      ← proxy logic
+├── wrangler.toml      ← cloudflare config
+├── package.json       ← project config
+└── README.md
+```
 
 ## How it works
-1. Request hits `api.mtaiirus.workers.dev`
-2. Worker rewrites the `Host` header to `rarestudy.in` and fetches from origin
-3. For HTML responses, all `rarestudy.in` URLs are rewritten back to `api.mtaiirus.workers.dev`
-4. Response is returned to the user
-
-## Adding a custom domain later
-Uncomment the `[[routes]]` section in `wrangler.toml` and fill in your domain.
+- All requests to api.mtaiirus.workers.dev/path are forwarded to rarestudy.in/path
+- HTML responses have all rarestudy.in URLs rewritten to api.mtaiirus.workers.dev
+- Host header is rewritten so the origin accepts the request
+- Security headers (CSP, X-Frame-Options) are stripped so the proxy works cleanly
