@@ -1,0 +1,13 @@
+name = "mtaiirus"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+ 
+[vars]
+ORIGIN = "https://rarestudy.in"
+ 
+# Routes — binds your worker to the workers.dev subdomain automatically
+# If you add a custom domain later, add it here:
+# [[routes]]
+# pattern = "yourdomain.com/*"
+# zone_name = "yourdomain.com"
+ 
